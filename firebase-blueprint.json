@@ -1,0 +1,80 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the system, can be an admin, worker, manager, or regular user.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "name": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "worker", "manager", "user"] },
+        "departmentId": { "type": "string", "description": "Optional: ID of the department they belong to." },
+        "photoURL": { "type": "string" }
+      },
+      "required": ["uid", "email", "name", "role"]
+    },
+    "Department": {
+      "title": "Department",
+      "description": "A company department.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "image": { "type": "string" }
+      },
+      "required": ["id", "name", "description"]
+    },
+    "Appointment": {
+      "title": "Appointment",
+      "description": "An appointment booked by a user with a manager.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "managerId": { "type": "string" },
+        "managerName": { "type": "string" },
+        "date": { "type": "string", "format": "date" },
+        "time": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "confirmed", "cancelled"] },
+        "notes": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "managerId", "date", "time", "status"]
+    },
+    "Report": {
+      "title": "Report",
+      "description": "A work report uploaded by a worker.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "workerId": { "type": "string" },
+        "workerName": { "type": "string" },
+        "title": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "workerId", "title", "content", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles."
+    },
+    "/departments/{departmentId}": {
+      "schema": "Department",
+      "description": "Company departments."
+    },
+    "/appointments/{appointmentId}": {
+      "schema": "Appointment",
+      "description": "User appointments."
+    },
+    "/reports/{reportId}": {
+      "schema": "Report",
+      "description": "Worker reports."
+    }
+  }
+}
